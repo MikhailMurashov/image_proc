@@ -1,5 +1,7 @@
 # Image processing
-Parallel image processing: to grayscale and gaussian blur
+**Parallel image processing: to grayscale and gaussian blur**
+
+You can find CUDA implementation in *cuda* folder.
 
 Build the project with CMake and yours compiler. Command to run:
 

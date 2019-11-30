@@ -18,8 +18,8 @@ Mat to_grayscale(const Mat& image) {
         #pragma omp parallel for
         for (j = 0; j < image.cols; j++) {
             uchar B = 0.114 * image.at<Vec3b>(i,j)[0];
-            uchar R = 0.299 * image.at<Vec3b>(i,j)[1];
-            uchar G = 0.587 * image.at<Vec3b>(i,j)[2];
+            uchar G = 0.587 * image.at<Vec3b>(i,j)[1];
+            uchar R = 0.299 * image.at<Vec3b>(i,j)[2];
             grayscale_img.at<uchar>(i,j) = B + R + G;
         }
 
