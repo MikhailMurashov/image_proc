@@ -8,7 +8,7 @@ using namespace cv;
 using namespace std;
 
 Mat to_grayscale(const Mat& image) {
-    Mat grayscale_img = Mat(image.rows, image.cols, CV_8U);
+    Mat grayscale_img(image.rows, image.cols, CV_8UC1);
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -21,7 +21,7 @@ Mat to_grayscale(const Mat& image) {
             uchar B = 0.114f * image.at<Vec3b>(i,j)[0];
             uchar G = 0.587f * image.at<Vec3b>(i,j)[1];
             uchar R = 0.299f * image.at<Vec3b>(i,j)[2];
-            grayscale_img.at<uchar>(i,j) = B + R + G;
+            grayscale_img.at<uchar>(i,j) = B + G + R;
         }
 
     auto stop = std::chrono::high_resolution_clock::now();
@@ -31,9 +31,9 @@ Mat to_grayscale(const Mat& image) {
     return grayscale_img;
 }
 
-Mat gaussian_blur(const Mat& image, const int kernel_size = 3) {
+Mat gaussian_blur(const Mat& image, const int kernel_size = 5) {
     Mat kernel = getGaussianKernel(kernel_size, 1) * getGaussianKernel(kernel_size, 1).t();
-    Mat blur; image.copyTo(blur);
+    Mat blur(image.rows, image.cols, CV_8UC1);
 
     int i, j, k, l;
 
