@@ -85,9 +85,5 @@ int main(int argc, char* argv[]) {
     Mat gray = to_grayscale(image);
     Mat gray_blur = gaussian_blur(gray);
 
-    namedWindow("gray", WINDOW_NORMAL);
-    imshow("gray", gray_blur);
-    waitKey();
-
     return 0;
 }
