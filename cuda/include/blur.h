@@ -9,6 +9,6 @@
 
 using namespace cv;
 
-Mat gaussian_blur(const Mat&, const uint = 3);
+Mat gaussian_blur(const Mat&, const uint = 5);
 
 #endif
