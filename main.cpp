@@ -2,6 +2,7 @@
 #include <omp.h>
 #include <chrono>
 #include <opencv2/opencv.hpp>
+#include <algorithm>
 
 using namespace cv;
 using namespace std;
@@ -17,9 +18,9 @@ Mat to_grayscale(const Mat& image) {
     for (i = 0; i < image.rows; i++)
         #pragma omp parallel for
         for (j = 0; j < image.cols; j++) {
-            uchar B = 0.114 * image.at<Vec3b>(i,j)[0];
-            uchar G = 0.587 * image.at<Vec3b>(i,j)[1];
-            uchar R = 0.299 * image.at<Vec3b>(i,j)[2];
+            uchar B = 0.114f * image.at<Vec3b>(i,j)[0];
+            uchar G = 0.587f * image.at<Vec3b>(i,j)[1];
+            uchar R = 0.299f * image.at<Vec3b>(i,j)[2];
             grayscale_img.at<uchar>(i,j) = B + R + G;
         }
 
@@ -39,18 +40,21 @@ Mat gaussian_blur(const Mat& image, const int kernel_size = 3) {
     auto start = std::chrono::high_resolution_clock::now();
 
     #pragma omp parallel for private(j, k, l)
-    for(i = kernel_size/2; i < image.rows - kernel_size/2; i++)
+    for(i = 0; i < image.rows; i++)
         #pragma omp parallel for private(k, l)
-        for(j = kernel_size/2; j < image.cols - kernel_size/2; j++) {
-            double p = 0;
+        for(j = 0; j < image.cols; j++) {
+            int half = static_cast<int>(kernel_size / 2);
+            double b = 0.0f;
 
-            for(k = 0; k < kernel_size; k++)
-                for(l = 0; l < kernel_size; l++) {
-                    double pixel = image.at<uchar>(i + k - kernel_size/2, j + l - kernel_size/2);
-                    p += pixel * kernel.at<double>(k, l);
+            for(k = -half; k < half; k++)
+                for(l = -half; l < half; l++) {
+                    int x = max(0, min(image.rows-1, i+k));
+                    int y = max(0, min(image.cols-1, j+l));
+                    double pixel = image.at<uchar>(x, y);
+                    b += pixel * kernel.at<double>(k + half, l + half);
                 }
 
-            blur.at<uchar>(i,j) = p;
+            blur.at<uchar>(i,j) = static_cast<uchar>(b);
         }
 
     auto stop = std::chrono::high_resolution_clock::now();
@@ -80,6 +84,10 @@ int main(int argc, char* argv[]) {
 
     Mat gray = to_grayscale(image);
     Mat gray_blur = gaussian_blur(gray);
+
+    namedWindow("gray", WINDOW_NORMAL);
+    imshow("gray", gray_blur);
+    waitKey();
 
     return 0;
 }

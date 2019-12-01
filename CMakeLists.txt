@@ -3,7 +3,7 @@ project(image_proc)
 
 set(CMAKE_CXX_STANDARD 11)
 
-find_package(OpenCV COMPONENTS REQUIRED opencv_imgcodecs)
+find_package(OpenCV REQUIRED)
 message(STATUS "OpenCV library status:")
 message(STATUS "    version: ${OpenCV_VERSION}")
 message(STATUS "    libraries: ${OpenCV_LIBS}")
