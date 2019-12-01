@@ -1,7 +1,7 @@
 # Image processing
 **Image processing with CUDA on GPU: to grayscale and gaussian blur**
 
-To check your CUDA environment use `hello_world` function in `hellow_world.cu`
+To check your CUDA environment use `hello_world` function in `hello_world.cu`
 
 ##### Tested on:
  - gcc-7.4.0
