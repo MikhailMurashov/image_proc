@@ -3,7 +3,13 @@
 
 You can find CUDA implementation in *cuda* folder.
 
-Build the project with CMake and yours compiler. Command to run:
+Build the project with CMake on Unix system:
+
+`$ cmake -G "Unix Makefiles" <path_to_folder_with_CMakeLists>`
+
+`$ cmake --build <path_to_folder_with_Makefile> --target image_proc`
+
+Command to run:
 
 `./image_proc <path_to_image> <num_of_threads>`
 

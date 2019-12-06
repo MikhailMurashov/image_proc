@@ -1,6 +1,7 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
+#include "hello_world.h"
 #include "grayscale.h"
 #include "blur.h"
 
@@ -16,6 +17,8 @@ int main(int argc, char* argv[]) {
              << "Please provide valid path to image in second argument" << endl;
         return -1;
     }
+
+//    hello_world();
 
     Mat gray = to_grayscale(image);
     Mat gray_blur = gaussian_blur(gray);
