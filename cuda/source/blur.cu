@@ -35,7 +35,7 @@ Mat gaussian_blur(const Mat& image, const uint kernel_size) {
 
     const size_t num_pixels = image.rows * image.cols;
 
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start_mem1 = std::chrono::high_resolution_clock::now();
 
     // allocate memory on gpu
     cudaMalloc((void **)&dev_image, sizeof(uchar) * num_pixels);
@@ -49,11 +49,21 @@ Mat gaussian_blur(const Mat& image, const uint kernel_size) {
     cudaMemcpy(dev_image, image.ptr<uchar>(), sizeof(uchar) * num_pixels, cudaMemcpyHostToDevice);
     cudaMemcpy(dev_kernel, kernel.ptr<double>(), sizeof(double) * kernel_size * kernel_size, cudaMemcpyHostToDevice);
 
+    auto stop_mem1 = std::chrono::high_resolution_clock::now();
+
     const dim3 blockSize(16, 16);
     const dim3 gridSize(image.cols / blockSize.x + 1, image.rows / blockSize.y + 1);
 
+    auto start_kernel = std::chrono::high_resolution_clock::now();
+
     // calculate blur image
     apply_filter <<< gridSize, blockSize >>> (dev_image, dev_blur, image.rows, image.cols, dev_kernel, kernel_size);
+
+    auto stop_kernel = std::chrono::high_resolution_clock::now();
+    auto time_kernel = std::chrono::duration_cast<std::chrono::microseconds>(stop_kernel - start_kernel);
+    std::cout << "GPU blur kernel time: " << (double)time_kernel.count() / 1000000 << " sec" << std::endl;
+
+    auto start_mem2 = std::chrono::high_resolution_clock::now();
 
     // copy result from gpu
     cudaMemcpy(blur.data, dev_blur, sizeof(uchar) * num_pixels, cudaMemcpyDeviceToHost);
@@ -61,9 +71,10 @@ Mat gaussian_blur(const Mat& image, const uint kernel_size) {
     // free memory on gpu
     cudaFree(dev_image); cudaFree(dev_blur); cudaFree(dev_kernel);
 
-    auto stop = std::chrono::high_resolution_clock::now();
-    auto time = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-    std::cout << "GPU blur time: " << (float)time.count() / 1000 << " sec" << std::endl;
+    auto stop_mem2 = std::chrono::high_resolution_clock::now();
+    auto time_mem = std::chrono::duration_cast<std::chrono::milliseconds>(stop_mem1 - start_mem1) +
+                    std::chrono::duration_cast<std::chrono::milliseconds>(stop_mem2 - start_mem2);
+    std::cout << "GPU blur memcpy time: " << (float)time_mem.count() / 1000 << " sec" << std::endl << std::endl;
 
     return blur;
 }

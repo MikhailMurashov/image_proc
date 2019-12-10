@@ -15,7 +15,7 @@ Images will be saved in `grayscale.jpg` and `blur.jpg`.
 
 To check your CUDA environment use `hello_world` function in `hello_world.cu` (uncomment line 21 in `main.cpp`).
 
-##### Tested on:
+#### Tested on:
  - gcc-7.4.0
  - CMake 3.15
  - OpenCV 4.1.2
@@ -24,3 +24,11 @@ To check your CUDA environment use `hello_world` function in `hello_world.cu` (u
  **!Warning!** If you using CLion IDE install 
  [CLion CUDA Run Patcher](https://plugins.jetbrains.com/plugin/10691-clion-cuda-run-patcher) 
  for running CUDA executable.
+ 
+ #### Results:
+ 
+ | | Grayscale, sec | Gaussian blur, sec |
+ | :------: | :------: | :------: |
+ | kernel time | 3e-05 | 2.8e-05 |
+ | memcpy time | 0,228 | 0,078 |
+ 
