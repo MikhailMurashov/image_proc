@@ -34,4 +34,4 @@ Build with *release* CMake flag
 | CPU 1 thread | 0,256 | 2,451 |
 | CPU 2 threads | 0,144 | 1,297 |
 | CPU 4 threads | 0,087 | 0,908 |
-| GPU | 0,288 | 0,086 |
+| GPU (with memcpy) | 0,288 | 0,086 |
