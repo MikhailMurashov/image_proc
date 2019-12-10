@@ -13,6 +13,8 @@ Command to run:
 
 `./image_proc <path_to_image> <num_of_threads>`
 
+Images will be saved in `grayscale.jpg` and `blur.jpg`.
+
 #### Tested on:
  - gcc-7.4.0
  - CMake 3.15

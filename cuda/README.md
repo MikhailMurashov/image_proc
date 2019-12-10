@@ -11,6 +11,8 @@ Command to run:
 
 `./image_proc_cuda <path_to_image>`
 
+Images will be saved in `grayscale.jpg` and `blur.jpg`.
+
 To check your CUDA environment use `hello_world` function in `hello_world.cu` (uncomment line 21 in `main.cpp`).
 
 ##### Tested on:

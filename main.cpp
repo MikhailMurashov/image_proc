@@ -85,5 +85,8 @@ int main(int argc, char* argv[]) {
     Mat gray = to_grayscale(image);
     Mat gray_blur = gaussian_blur(gray);
 
+    imwrite("grayscale.jpg", gray);
+    imwrite("blur.jpg", gray_blur);
+
     return 0;
 }
